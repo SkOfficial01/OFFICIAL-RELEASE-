@@ -21,7 +21,7 @@ from SANKI.utils.database import (
 )
 from SANKI.utils.decorators.language import LanguageStart
 from SANKI.utils.formatters import get_readable_time
-from SANKI.utils.inline import help_pannel, private_panel, start_panel
+from SANKI.utils.inline import private_panel, start_panel
 from config import BANNED_USERS
 from strings import get_string
 
