@@ -156,7 +156,7 @@ async def welcome(client, message: Message):
                 out = start_panel(_)
                 await message.reply_photo(
                     photo=config.START_IMG_URL,
-                    caption=_["start_7"].format(
+                    caption=_["start_2"].format(
                         message.from_user.first_name,
                         app.mention,
                         message.chat.title,
