@@ -9,7 +9,6 @@ import config
 from SANKI import app
 from SANKI.misc import _boot_
 from SANKI.plugins.sudo.sudoers import sudoers_list
-from SANKI.utils.database import get_served_chats, get_served_users, get_sudoers
 from SANKI.utils import bot_sys_stats
 from SANKI.utils.database import (
     add_served_chat,
@@ -21,16 +20,24 @@ from SANKI.utils.database import (
 )
 from SANKI.utils.decorators.language import LanguageStart
 from SANKI.utils.formatters import get_readable_time
-from SANKI.utils.inline import private_panel, start_panel
+from SANKI.utils.inline import first_page, private_panel, start_panel
 from config import BANNED_USERS
 from strings import get_string
 
 
-
-SANKI_VIDS = [
-"https://telegra.ph/file/c8cdcbeb80c56b499797e.mp4",
+#<<<<<<<<<<<<<pics>>>>>>>>>>>#
+SANKI_PICS = [
+"https://telegra.ph/file/0c2a557598a5aa8033895.jpg",
+"https://telegra.ph/file/0c2a557598a5aa8033895.jpg",
+"https://telegra.ph/file/0c2a557598a5aa8033895.jpg",
+"https://telegra.ph/file/0c2a557598a5aa8033895.jpg",
+"https://telegra.ph/file/0c2a557598a5aa8033895.jpg",
+"https://telegra.ph/file/0c2a557598a5aa8033895.jpg",
+"https://telegra.ph/file/0c2a557598a5aa8033895.jpg"
 ]
 
+
+#<<<<<<<<<<<<<pics>>>>>>>>>>>
 
 
 @app.on_message(filters.command(["start"]) & filters.private & ~BANNED_USERS)
@@ -40,9 +47,10 @@ async def start_pm(client, message: Message, _):
     if len(message.text.split()) > 1:
         name = message.text.split(None, 1)[1]
         if name[0:4] == "help":
-            keyboard = help_pannel(_)
-            return await message.reply_video(
-                random.choice(YUMI_VIDS),
+            keyboard = first_page(_)
+            await message.reply_sticker("CAACAgQAAx0CfZaObAACAQ9l2kHlGGCtFsRQP_nt864BXaeq6QACYhEAArL1IFJSwcBaFbhEdB4E")
+            return await message.reply_photo(
+                photo=config.START_IMG_URL,
                 caption=_["help_1"].format(config.SUPPORT_CHAT),
                 reply_markup=keyboard,
             )
@@ -55,7 +63,7 @@ async def start_pm(client, message: Message, _):
                 )
             return
         if name[0:3] == "inf":
-            m = await message.reply_text("🔎")
+            m = await message.reply_text("**» sᴇᴀʀᴄʜɪɴɢ ʙᴀʙʏ ᴘʟᴇᴀsᴇ ᴡᴀɪᴛ ")
             query = (str(name)).replace("info_", "", 1)
             query = f"https://www.youtube.com/watch?v={query}"
             results = VideosSearch(query, limit=1)
@@ -93,12 +101,10 @@ async def start_pm(client, message: Message, _):
                 )
     else:
         out = private_panel(_)
-        served_chats = len(await get_served_chats())
-        served_users = len(await get_served_users())
-        UP, CPU, RAM, DISK = await bot_sys_stats()
-        await message.reply_video(
-            random.choice(SANKI_VIDS),
-            caption=_["start_2"].format(message.from_user.mention, app.mention, UP, DISK, CPU, RAM,served_users,served_chats),
+        await message.reply_sticker("CAACAgQAAx0CfZaObAACAQ9l2kHlGGCtFsRQP_nt864BXaeq6QACYhEAArL1IFJSwcBaFbhEdB4E")
+        await message.reply_photo(
+            photo=config.START_IMG_URL,
+            caption=_["start_2"].format(message.from_user.mention, app.mention),
             reply_markup=InlineKeyboardMarkup(out),
         )
         if await is_on_off(2):
@@ -113,8 +119,8 @@ async def start_pm(client, message: Message, _):
 async def start_gp(client, message: Message, _):
     out = start_panel(_)
     uptime = int(time.time() - _boot_)
-    await message.reply_video(
-        random.choice(SANKI_VIDS),
+    await message.reply_photo(
+        photo=config.START_IMG_URL,
         caption=_["start_2"].format(app.mention, get_readable_time(uptime)),
         reply_markup=InlineKeyboardMarkup(out),
     )
@@ -134,11 +140,11 @@ async def welcome(client, message: Message):
                     pass
             if member.id == app.id:
                 if message.chat.type != ChatType.SUPERGROUP:
-                    await message.reply_text(_["start_4"])
+                    await message.reply_text(_["start_2"])
                     return await app.leave_chat(message.chat.id)
                 if message.chat.id in await blacklisted_chats():
                     await message.reply_text(
-                        _["start_5"].format(
+                        _["start_2"].format(
                             app.mention,
                             f"https://t.me/{app.username}?start=sudolist",
                             config.SUPPORT_CHAT,
@@ -148,10 +154,10 @@ async def welcome(client, message: Message):
                     return await app.leave_chat(message.chat.id)
 
                 out = start_panel(_)
-                await message.reply_video(
-                    random.choice(SANKI_VIDS),
+                await message.reply_photo(
+                    photo=config.START_IMG_URL,
                     caption=_["start_2"].format(
-                        message.from_user.mention,
+                        message.from_user.first_name,
                         app.mention,
                         message.chat.title,
                         app.mention,
